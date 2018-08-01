@@ -1,14 +1,19 @@
-var createError = require('http-errors')
-var express = require('express')
-var path = require('path')
-var cookieParser = require('cookie-parser')
-var logger = require('morgan')
+import createError from 'http-errors'
+import express from 'express'
+import path from 'path'
+import cookieParser from 'cookie-parser'
+import logger from 'morgan'
+import passport from 'passport'
+import mongoose from 'mongoose'
 
-var indexRouter = require('./routes/index')
-var usersRouter = require('./routes/users')
+import config from './config'
+import apiRoutes from './routes/index'
+import usersRouter from './routes/users'
 
 var app = express()
 
+mongoose.Promise = require('bluebird')
+mongoose.connect(config.DB)
 // view engine setup
 // app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade')
@@ -19,11 +24,25 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, '../build')))
 
-app.use('/', indexRouter)
+app.use(passport.initialize())
+app.use(passport.session())
+apiRoutes(app, passport)
+
+// app.use('/', indexRouter)
 app.use('/users', usersRouter)
 
 // catch 404 and forward to error handler
+var port = config.APP_PORT || 4000
 app.use(function (req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:' + port)
+
+  // Request methods you wish to allow
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE')
+
+  // Request headers you wish to allow
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type')
+
+  // Pass to next layer of middleware
   next(createError(404))
 })
 

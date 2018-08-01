@@ -1,9 +1,7 @@
-var express = require('express')
-var router = express.Router()
+import product from './product'
 
 /* GET home page. */
-router.get('/', function (req, res, next) {
-  res.render('index', { title: 'Express' })
-})
-
-module.exports = router
+export default (app, passport) => {
+  console.log('(/products, product)')
+  app.use('/products', product)
+}
