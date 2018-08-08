@@ -1,3 +1,4 @@
+/* global fetch */
 import React from 'react'
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
@@ -16,6 +17,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite'
 import ShareIcon from '@material-ui/icons/Share'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
+// import { createProduct } from './api/ProductAPI'
 
 import './ItemPrudct.css'
 
@@ -53,8 +55,25 @@ class RecipeReviewCard extends React.Component {
     }
     this.handleExpandClick = this.handleExpandClick.bind(this)
   }
-
+  fetchProduct (data) {
+    console.log(data)
+    return fetch(`/products`, {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    }).then(data => data.json())
+      .catch(err => err)
+  }
   handleExpandClick () {
+    var data = {
+      name: 'Xoài cát hoà lộc',
+      count: 10
+    }
+    this.fetchProduct(data).then((temp) => {
+      console.log(temp)
+    })
     this.setState(state => ({ expanded: !state.expanded }))
   };
 

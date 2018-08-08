@@ -1,73 +1,49 @@
-'use strict'
 
-var express = require('express')
+import express from 'express'
+import ProductController from '../controller/ProductConroller'
+var productRoutes = express.Router()
 
-var todoRoutes = express.Router()
+// get all products in the db
 
-var Product = require('../models/ProductModel')
+productRoutes.get('/', (req, res, next) => {
+  console.log('run')
+  ProductController.getAll()
+    .then(products => res.json({ success: true, data: products }))
+    .catch(() => res.json({ isError: true, data: [] }))
+})
 
-// get all todos in the db
-
-todoRoutes.route('/all').get(function (req, res, next) {
-  Product.find(function (err, todos) {
-    if (err) {
-      return next(new Error(err))
-    }
-
-    res.json(todos) // return all todos
+// create a product item
+productRoutes.post('/', (req, res, next) => {
+  ProductController.create({
+    name: req.body.name || '',
+    createAt: Date.now(),
+    count: req.body.count || 1,
+    isSold: req.body.isSold || false
   })
+    .then(product => {
+      console.log(product)
+      res.json({ success: true, data: product })
+    })
+    .catch((e) => {
+      console.log(e)
+      res.json({ isError: true, data: [] })
+    })
 })
 
-// create a todo item
-todoRoutes.route('/add').post(function (req, res) {
-  Product.create(
-    {
-      name: req.body.name,
-      done: false
-    },
-    function (error, todo) {
-      if (error) {
-        res.status(400).send('Unable to create todo list')
-      }
-      res.status(200).json(todo)
-    }
-  )
+// delete a product item
+
+productRoutes.delete('/:id', (req, res, next) => {
+  ProductController.delete(req.params.id, req.body)
+    .then(product => res.json({ success: true, data: product }))
+    .catch(() => res.json({ isError: true, data: [] }))
 })
 
-// delete a todo item
+// perform update on product item
 
-todoRoutes.route('/delete/:id').get(function (req, res, next) {
-  var id = req.params.id
-  Product.findByIdAndRemove(id, function (err, todo) {
-    if (err) {
-      return next(new Error('Todo was not found'))
-    }
-    res.json('Successfully removed')
-  })
+productRoutes.put('/:id', (req, res, next) => {
+  ProductController.update(req.params.id, req.body)
+    .then(product => res.json({ success: true, data: product }))
+    .catch(() => res.json({ isError: true, data: [] }))
 })
 
-// perform update on todo item
-
-todoRoutes.route('/update/:id').post(function (req, res, next) {
-  var id = req.params.id
-  Product.findById(id, function (error, todo) {
-    if (error) {
-      return next(new Error('Todo was not found'))
-    } else {
-      todo.name = req.body.name
-      todo.done = req.body.done
-
-      todo.save({
-        function (error, todo) {
-          if (error) {
-            res.status(400).send('Unable to update todo')
-          } else {
-            res.status(200).json(todo)
-          }
-        }
-      })
-    }
-  })
-})
-
-module.exports = todoRoutes
+export default productRoutes

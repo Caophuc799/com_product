@@ -1,20 +1,26 @@
-var mongoose = require('mongoose')
+import mongoose from 'mongoose'
 
 // Define collection and schema for todo item
 
 var product = new mongoose.Schema({
   name: {
-    type: String
+    type: String,
+    default: '',
+    required: true
   },
-
-  done: {
-    type: Boolean
+  createAt: {
+    type: Date,
+    default: Date.now
+  },
+  count: {
+    type: Number,
+    default: 1
+  },
+  isSold: {
+    type: Boolean,
+    default: false
   }
-},
-
-{
-  collection: 'com_pro'
 }
 )
 
-module.exports = mongoose.model('Product', product)
+export default mongoose.model('products', product)

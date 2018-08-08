@@ -5,6 +5,7 @@ import { Route, Switch, withRouter } from 'react-router-dom'
 import AppBar from './components/AppBar/AppBar.js'
 import Home from './containers/Home/Home.js'
 import './App.css'
+// import { createProduct } from './api/ProductAPI'
 
 class App extends Component {
   constructor (props) {
@@ -13,14 +14,30 @@ class App extends Component {
       response: ''
     }
   }
-
+  fetchProduct (data) {
+    console.log(data)
+    return fetch(`/products`, {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    }).then(data => data.json())
+      .catch(err => err)
+  }
   componentDidMount () {
-    fetch('/users')
-      .then(res => res.json())
-      .then(users => this.setState({ users }))
+    // var data = {
+    //   name: 'Xoài cát hoà lộc',
+    //   count: 10
+    // }
+    // // createProduct(data)
+    // fetch('/products')
+    //   .then(res => res.json())
+    //   .then(users => this.setState({ users }))
   }
 
   render () {
+    console.log(this.state.users)
     return (
       <div className='App'>
         <AppBar />

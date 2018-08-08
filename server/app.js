@@ -3,25 +3,30 @@ import express from 'express'
 import path from 'path'
 import cookieParser from 'cookie-parser'
 import logger from 'morgan'
+import bodyParser from 'body-parser'
 import passport from 'passport'
 import mongoose from 'mongoose'
 
 import config from './config'
 import apiRoutes from './routes/index'
-import usersRouter from './routes/users'
+// import usersRouter from './routes/users'
 
 var app = express()
 
 mongoose.Promise = require('bluebird')
+// mongoose.connect('mongodb://localhost:27017/com_pro', { promiseLibrary: require('bluebird') })
+//   .then(() => console.log('connection succesful'))
+//   .catch((err) => console.error(err))
 mongoose.connect(config.DB)
 // view engine setup
 // app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade')
+app.set('view engine', 'ejs')
 
 app.use(logger('dev'))
-app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
+
 app.use(express.static(path.join(__dirname, '../build')))
 
 app.use(passport.initialize())
@@ -29,7 +34,7 @@ app.use(passport.session())
 apiRoutes(app, passport)
 
 // app.use('/', indexRouter)
-app.use('/users', usersRouter)
+// app.use('/users', usersRouter)
 
 // catch 404 and forward to error handler
 var port = config.APP_PORT || 4000
@@ -54,7 +59,7 @@ app.use(function (err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500)
-  res.render('error')
+  res.send('error')
 })
 
 module.exports = app

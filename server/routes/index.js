@@ -1,7 +1,8 @@
 import product from './product'
+import users from './users'
 
 /* GET home page. */
 export default (app, passport) => {
-  console.log('(/products, product)')
   app.use('/products', product)
+  app.use('/users', users)
 }
