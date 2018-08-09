@@ -1,66 +1,53 @@
 import React, { Component } from 'react'
-// import Item from './ItemProduct/ItemProduct.js'
-import { Link } from 'react-router-dom'
+import Item from './ItemProduct/ItemProduct.js'
+// import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+
 import '../../common/assets/css/grid.min.css'
 import './Home.css'
+import { fetchProducts, deleteProduct } from '../../../Actions/Product'
 
-import store from '../../Store'
+// import store from '../../Store'
 
 class Home extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      products: []
     }
-    this.getListProducts = this.getListProducts.bind(this)
   }
 
   componentDidMount () {
-    this.getListProducts()
+    this.props.fetchProducts()
   }
 
-  componentWillMount () {
-    store.subscribe(() => {
-      this.getListProducts()
-    })
-  }
-
-  getListProducts () {
-    const state = store.getState()
-    if (state.products) {
-      this.setState({products: state.products.items})
-    }
-  }
   render () {
-    const { products } = this.state
-    console.log(products)
+    const { products } = this.props
     return (
       <div className='container home-container'>
         <div className='row'>
-
-          <Link to='/product' >link</Link>
-          <hr />
           {
             products.length > 0
               ? products.map((item) => {
                 return (
-                  <div>
-                    {item.name} {item.price}
-                    <hr />
-                  </div>
+                  <Item product={item} history={this.props.history} deleteProduct={this.props.deleteProduct} />
                 )
               }) : ''
           }
-          {/* <Item />
-          <Item />
-          <Item />
-          <Item />
-          <Item />
-          <Item /> */}
         </div>
       </div>
     )
   }
 }
 
-export default Home
+const mapStateToProps = ({ products }) => ({
+  products: products.data || []
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  fetchProducts: () => dispatch(fetchProducts()),
+  deleteProduct: (id) => dispatch(deleteProduct(id))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home)
+
+// export default Home

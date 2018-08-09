@@ -6,7 +6,6 @@ var productRoutes = express.Router()
 // get all products in the db
 
 productRoutes.get('/', (req, res, next) => {
-  console.log('run')
   ProductController.getAll()
     .then(products => res.json({ success: true, data: products }))
     .catch(() => res.json({ isError: true, data: [] }))
@@ -20,14 +19,8 @@ productRoutes.post('/', (req, res, next) => {
     count: req.body.count || 1,
     isSold: req.body.isSold || false
   })
-    .then(product => {
-      console.log(product)
-      res.json({ success: true, data: product })
-    })
-    .catch((e) => {
-      console.log(e)
-      res.json({ isError: true, data: [] })
-    })
+    .then(product => res.json({ success: true, data: product }))
+    .catch((e) => res.json({ isError: true, data: [] }))
 })
 
 // delete a product item

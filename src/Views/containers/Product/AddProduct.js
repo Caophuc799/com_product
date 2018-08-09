@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import store from '../../Store'
+// import store from '../../Store'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
-import { createProduct } from '../../../Actions/Product'
+import { createProduct, fetchProducts } from '../../../Actions/Product'
 
 import './AddProduct.css'
 class AddProduct extends Component {
@@ -12,27 +13,25 @@ class AddProduct extends Component {
     this.state = {
       product: {
         name: '',
-        price: ''
+        description: '',
+        price: '',
+        count: ''
       },
       products: []
     }
     this.createNewProduct = this.createNewProduct.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.clearAll = this.clearAll.bind(this)
-    this.getlist = this.getlist.bind(this)
   }
 
-  getlist () {
-    let state = store.getState()
-    if (state.products) {
-      this.setState({products: state.products.items})
-    }
+  componentDidMount () {
+    this.props.getAllProducts()
   }
 
   createNewProduct (data) {
     let { product } = this.state
-    store.dispatch(createProduct(product))
-    this.setState({product: {name: '', price: 0}}, () => this.getlist())
+    this.props.createProduct(product)
+    this.setState({product: {}})
   }
 
   clearAll () {
@@ -45,7 +44,8 @@ class AddProduct extends Component {
     this.setState({product})
   }
   render () {
-    let { product, products } = this.state
+    let { product } = this.state
+    const { products } = this.props
     return (
       <div className='container main-container'>
         <div className='row container-title add-product col-sm-12'>
@@ -124,4 +124,13 @@ class AddProduct extends Component {
   }
 }
 
-export default AddProduct
+const mapStatetoProps = ({products}) => ({
+  products: products.data || []
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  createProduct: (data) => dispatch(createProduct(data)),
+  getAllProducts: () => dispatch(fetchProducts())
+})
+
+export default connect(mapStatetoProps, mapDispatchToProps)(AddProduct)

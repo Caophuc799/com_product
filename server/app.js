@@ -14,9 +14,6 @@ import apiRoutes from './routes/index'
 var app = express()
 
 mongoose.Promise = require('bluebird')
-// mongoose.connect('mongodb://localhost:27017/com_pro', { promiseLibrary: require('bluebird') })
-//   .then(() => console.log('connection succesful'))
-//   .catch((err) => console.error(err))
 mongoose.connect(config.DB)
 // view engine setup
 // app.set('views', path.join(__dirname, 'views'));
@@ -37,9 +34,9 @@ apiRoutes(app, passport)
 // app.use('/users', usersRouter)
 
 // catch 404 and forward to error handler
-var port = config.APP_PORT || 4000
+// var port = config.APP_PORT || 4000
 app.use(function (req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:' + port)
+  res.setHeader('Access-Control-Allow-Origin', '*')
 
   // Request methods you wish to allow
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE')

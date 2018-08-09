@@ -15,7 +15,6 @@ class ProductController {
     return new Promise((resolve, reject) => {
       Product.create(product)
         .then(product => {
-          console.log(product)
           resolve(product)
         })
         .catch(error => reject(error))

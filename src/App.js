@@ -16,7 +16,6 @@ class App extends Component {
     }
   }
   fetchProduct (data) {
-    console.log(data)
     return fetch(`/products`, {
       method: 'post',
       headers: {
@@ -38,7 +37,6 @@ class App extends Component {
   }
 
   render () {
-    console.log(this.state.users)
     return (
       <div className='App'>
         <AppBar />
