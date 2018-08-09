@@ -22,6 +22,24 @@
   font-size: large;
 }
 
+.main-container{
+  padding: 30px 30px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  background-color: white;
+  min-height: 71vh;
+  height: auto;
+}
+
+.main-button-ok{
+  background-color: '#4DC9B3'!important;
+  float: right;
+}
+
+.container-title{
+  font-size: 30px;
+}
+
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }

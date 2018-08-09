@@ -2,9 +2,10 @@
 
 import React, { Component } from 'react'
 import { Route, Switch, withRouter } from 'react-router-dom'
-import AppBar from './components/AppBar/AppBar.js'
-import Home from './containers/Home/Home.js'
+import AppBar from './Views/components/AppBar/AppBar.js'
+import Home from './Views/containers/Home/Home.js'
 import './App.css'
+import Product from './Views/containers/Product/Product.js'
 // import { createProduct } from './api/ProductAPI'
 
 class App extends Component {
@@ -42,7 +43,8 @@ class App extends Component {
       <div className='App'>
         <AppBar />
         <Switch>
-          <Route path='/' component={Home} />
+          <Route exact path='/' component={Home} />
+          <Route path='/product' component={Product} />
         </Switch>
       </div>
     )

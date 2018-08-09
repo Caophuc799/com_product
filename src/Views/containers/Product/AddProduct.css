@@ -1,0 +1,25 @@
+
+
+.add-product{
+    padding-left: 80px;
+    padding-right: 80px;
+}
+
+.add-product__input{
+    width: 100% !important;
+    margin-top: 20px;
+}
+
+.add-product__col{
+    padding: 20px 20px;
+}
+
+.add-product__button-save{
+    margin-top: 10px;
+    width: 100%;
+    display: inline-block;
+}
+
+.add-product__button-create{
+    margin-left: 10px !important;
+}

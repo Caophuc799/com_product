@@ -8,6 +8,10 @@ var product = new mongoose.Schema({
     default: '',
     required: true
   },
+  description: {
+    type: String,
+    default: ''
+  },
   createAt: {
     type: Date,
     default: Date.now
